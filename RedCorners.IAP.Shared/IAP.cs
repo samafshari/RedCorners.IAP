@@ -1,5 +1,4 @@
 ﻿using Plugin.InAppBilling;
-using Plugin.InAppBilling.Abstractions;
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RedCorners
+namespace RedCorners.IAP
 {
     public class IAP
     {
@@ -24,7 +23,6 @@ namespace RedCorners
                 var connected = await billing.ConnectAsync(itemType);
                 if (!connected) return null;
                 return await billing.GetProductInfoAsync(itemType, productIds);
-
             }
             finally
             {
@@ -40,9 +38,9 @@ namespace RedCorners
             var billing = CrossInAppBilling.Current;
             try
             {
-                var connected = await billing.ConnectAsync();
+                var connected = await billing.ConnectAsync(itemType);
                 if (!connected) return null;
-                return await billing.GetPurchasesAsync(itemType, new Verify());
+                return await billing.GetPurchasesAsync(itemType);
 
             }
             finally
@@ -54,12 +52,7 @@ namespace RedCorners
         volatile bool isPurchasing = false;
 
 
-        public async Task<InAppBillingPurchase> PurchaseItemAsync(ItemType itemType, string productId)
-        {
-            return await PurchaseItemAsync(itemType, productId, productId);
-        }
-
-        public async Task<InAppBillingPurchase> PurchaseItemAsync(ItemType itemType, string productId, string payload)
+        public async Task<InAppBillingPurchase> PurchaseItemAsync(ItemType itemType, string productId, bool restoreOnly)
         {
             if (isPurchasing) return null;
             isPurchasing = true;
@@ -77,7 +70,7 @@ namespace RedCorners
                 //restore purchases
                 try
                 {
-                    var existing = (await billing.GetPurchasesAsync(itemType, new Verify())).ToList();
+                    var existing = (await billing.GetPurchasesAsync(itemType)).ToList();
                     if (existing != null)
                     {
                         var item = existing.FirstOrDefault(x => x.ProductId == productId);
@@ -95,8 +88,11 @@ namespace RedCorners
                     Debug.WriteLine($"PurchaseItem: Existing error: {ex}");
                 }
 
-                //check purchases
-                var purchase = await billing.PurchaseAsync(productId, itemType, payload, new Verify());
+                if (restoreOnly)
+                    return null;
+                    
+                //perform purchase
+                var purchase = await billing.PurchaseAsync(productId, itemType, productId);
 
                 //possibility that a null came through.
                 if (purchase == null)
@@ -133,26 +129,5 @@ namespace RedCorners
             return null;
         }
 
-        internal class Verify : IInAppBillingVerifyPurchase
-        {
-            //const string key1 = @"XOR_key1";
-            //const string key2 = @"XOR_key2";
-            //const string key3 = @"XOR_key3";
-
-            public Task<bool> VerifyPurchase(string signedData, string signature, string productId = null, string transactionId = null)
-            {
-                return Task.FromResult(true);
-
-                //#if __ANDROID__
-                //            var key1Transform = Plugin.InAppBilling.InAppBillingImplementation.InAppBillingSecurity.TransformString(key1, 1);
-                //            var key2Transform = Plugin.InAppBilling.InAppBillingImplementation.InAppBillingSecurity.TransformString(key2, 2);
-                //            var key3Transform = Plugin.InAppBilling.InAppBillingImplementation.InAppBillingSecurity.TransformString(key3, 3);
-
-                //            return Task.FromResult(Plugin.InAppBilling.InAppBillingImplementation.InAppBillingSecurity.VerifyPurchase(key1Transform + key2Transform + key3Transform, signedData, signature));
-                //#else
-                //            return Task.FromResult(true);
-                //#endif
-            }
-        }
     }
 }

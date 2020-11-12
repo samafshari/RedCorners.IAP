@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>RedCorners.IAP.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>RedCorners.IAP.iOS</AssemblyName>
+    <AssemblyName>RedCorners.IAP</AssemblyName>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,12 +40,8 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InAppBilling.apple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Plugin.InAppBilling">
-      <Version>2.0.0</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="..\RedCorners.IAP.Shared\RedCorners.IAP.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
