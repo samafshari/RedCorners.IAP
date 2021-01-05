@@ -9,17 +9,6 @@
     <Import_RootNamespace>RedCorners.IAP</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\CrossInAppBilling.shared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAP.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\BaseInAppBilling.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\ConsumptionState.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\CustomAttributes.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\IInAppBilling.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\IInAppBillingVerifyPurchase.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\InAppBillingExceptions.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\InAppBillingProduct.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\InAppBillingPurchase.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\ItemType.shared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.InAppBilling\PurchaseState.shared.cs" />
   </ItemGroup>
 </Project>

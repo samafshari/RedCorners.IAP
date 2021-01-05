@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Plugin.InAppBilling" Version="2.0.0" />
+    <PackageReference Include="Plugin.InAppBilling" Version="4.0.2" />
   </ItemGroup>
 
   <Import Project="..\RedCorners.IAP.Shared\RedCorners.IAP.Shared.projitems" Label="Shared" />

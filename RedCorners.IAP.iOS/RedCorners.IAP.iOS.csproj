@@ -40,8 +40,12 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InAppBilling.apple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Plugin.InAppBilling">
+      <Version>4.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="..\RedCorners.IAP.Shared\RedCorners.IAP.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

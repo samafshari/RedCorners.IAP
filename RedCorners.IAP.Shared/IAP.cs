@@ -20,7 +20,7 @@ namespace RedCorners.IAP
             var billing = CrossInAppBilling.Current;
             try
             {
-                var connected = await billing.ConnectAsync(itemType);
+                var connected = await billing.ConnectAsync();
                 if (!connected) return null;
                 return await billing.GetProductInfoAsync(itemType, productIds);
             }
@@ -38,7 +38,7 @@ namespace RedCorners.IAP
             var billing = CrossInAppBilling.Current;
             try
             {
-                var connected = await billing.ConnectAsync(itemType);
+                var connected = await billing.ConnectAsync();
                 if (!connected) return null;
                 return await billing.GetPurchasesAsync(itemType);
 
@@ -59,7 +59,7 @@ namespace RedCorners.IAP
             var billing = CrossInAppBilling.Current;
             try
             {
-                var connected = await billing.ConnectAsync(itemType);
+                var connected = await billing.ConnectAsync();
                 if (!connected)
                 {
                     //we are offline or can't connect, don't try to purchase
@@ -67,6 +67,7 @@ namespace RedCorners.IAP
                     isPurchasing = false;
                     return null;
                 }
+
                 //restore purchases
                 try
                 {
@@ -92,7 +93,7 @@ namespace RedCorners.IAP
                     return null;
                     
                 //perform purchase
-                var purchase = await billing.PurchaseAsync(productId, itemType, productId);
+                var purchase = await billing.PurchaseAsync(productId, itemType);
 
                 //possibility that a null came through.
                 if (purchase == null)
@@ -102,11 +103,18 @@ namespace RedCorners.IAP
                 }
                 else if (purchase.State == PurchaseState.Purchased)
                 {
-                    //purchased!
-                    OnPurchase?.Invoke(this, purchase);
+                    if (await billing.AcknowledgePurchaseAsync(purchase.PurchaseToken))
+                    {
+                        //purchased!
+                        OnPurchase?.Invoke(this, purchase);
 
-                    Debug.WriteLine("PurchaseItem: True");
-                    return purchase;
+                        Debug.WriteLine("PurchaseItem: True");
+                        return purchase;
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"PurchaseItem: OK but didn't acknowledge!");
+                    }
                 }
             }
             catch (InAppBillingPurchaseException purchaseEx)
@@ -128,6 +136,5 @@ namespace RedCorners.IAP
             Debug.WriteLine("PurchaseItem: False");
             return null;
         }
-
     }
 }
