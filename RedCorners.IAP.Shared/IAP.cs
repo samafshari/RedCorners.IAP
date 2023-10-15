@@ -103,7 +103,8 @@ namespace RedCorners.IAP
                 }
                 else if (purchase.State == PurchaseState.Purchased)
                 {
-                    if (await billing.AcknowledgePurchaseAsync(purchase.PurchaseToken))
+                    var ack = await billing.FinalizePurchaseAsync(purchase.PurchaseToken);
+                    if (ack.Any(x => x.Success))
                     {
                         //purchased!
                         OnPurchase?.Invoke(this, purchase);

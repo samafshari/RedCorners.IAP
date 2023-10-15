@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.InAppBilling">
-      <Version>4.0.2</Version>
+      <Version>7.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\RedCorners.IAP.Shared\RedCorners.IAP.Shared.projitems" Label="Shared" />
